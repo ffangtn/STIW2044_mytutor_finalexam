@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:mytutor_final_project/views/register.dart';
 import 'package:mytutor_final_project/views/subjects.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constant.dart';
 import '../models/user.dart';

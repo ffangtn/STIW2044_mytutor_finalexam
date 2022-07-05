@@ -64,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
                     Expanded(
                         child: GridView.count(
                             crossAxisCount: 2,
-                            childAspectRatio: (0.60 / 1),
+                            childAspectRatio: (0.65 / 1),
                             children: List.generate(cartList.length, (index) {
                               return InkWell(
                                   child: Card(
@@ -85,72 +85,56 @@ class _CartScreenState extends State<CartScreen> {
                                           const Icon(Icons.error),
                                     ),
                                   ),
-                                  Text(
-                                    cartList[index].sbname.toString(),
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
                                   Flexible(
-                                    flex: 4,
-                                    child: Column(children: [
-                                      Column(children: [
-                                        Text("RM " +
-                                            double.parse(cartList[index]
-                                                    .price
-                                                    .toString())
-                                                .toStringAsFixed(2)+" /pack"),
-                                        Text(
-                                          "RM " +
-                                              double.parse(cartList[index]
-                                                      .pricetotal
-                                                      .toString())
-                                                  .toStringAsFixed(2),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              width: 40,
-                                              child: TextButton(
-                                                  onPressed: () {
-                                                    _updateCart(index, "-");
-                                                  },
-                                                  child: const Text("-")),
-                                            ),
-                                            Text(
-                                                cartList[index]
-                                                    .cartqty
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 16)),
-                                            Container(
-                                              width: 40,
-                                              child: TextButton(
-                                                  onPressed: () {
-                                                    _updateCart(index, "+");
-                                                  },
-                                                  child: const Text("+")),
-                                            ),
-                                            Container(
-                                              width: 30,
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    deleteDialog(index);
-                                                  },
-                                                  icon: const Icon(Icons.delete)),
-                                            )
-                                          ],
-                                        )
-                                      ]),
-                                    ]),
-                                  )
+                                      flex: 4,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 7,
+                                                child: Column(children: [
+                                                  Text(
+                                                    cartList[index]
+                                                        .sbname
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    cartList[index]
+                                                            .sbsession
+                                                            .toString() +
+                                                        " sessions",
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  Text("Price: "),
+                                                  Text(
+                                                    "RM" +
+                                                        double.parse(
+                                                                cartList[index]
+                                                                    .price
+                                                                    .toString())
+                                                            .toStringAsFixed(2),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ]),
+                                              ),
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: IconButton(
+                                                      onPressed: () {
+                                                        deleteDialog(index);
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.delete))),
+                                            ],
+                                          ),
+                                        ],
+                                      ))
                                 ],
                               )));
                             }))),
@@ -245,8 +229,7 @@ class _CartScreenState extends State<CartScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (content) => PaymentScreen(
-                            user: widget.user,
-                            totalpayable: totalpayable)));
+                            user: widget.user, totalpayable: totalpayable)));
                 _loadCart();
               },
             ),
@@ -298,77 +281,41 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  void _updateCart(int index, String s) {
-    if (s == "-") {
-      if (int.parse(cartList[index].cartqty.toString()) == 1) {
-        _deleteItem(index);
-      }
-    }
-    http.post(
-        Uri.parse(CONSTANTS.server + "/mytutor/mobile/php/update_cart.php"),
-        body: {'cartid': cartList[index].cartid, 'operation': s}).timeout(
-      const Duration(seconds: 5),
-      onTimeout: () {
-        return http.Response(
-            'Error', 408); // Request Timeout response status code
-      },
-    ).then((response) {
-      var jsondata = jsonDecode(response.body);
-      if (response.statusCode == 200 && jsondata['status'] == 'success') {
-        Fluttertoast.showToast(
-            msg: "Success",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0);
-        _loadCart();
-      } else {
-        Fluttertoast.showToast(
-            msg: "Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0);
-      }
-    });
-  }
-
-  void  deleteDialog(int index) {
-   
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            title: const Text(
-              "Delete this course?",
-              style: TextStyle(),
+  void deleteDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          title: const Text(
+            "Delete this course?",
+            style: TextStyle(),
+          ),
+          content: const Text("Are you sure?", style: TextStyle()),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Yes",
+                style: TextStyle(),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                _deleteItem(index);
+              },
             ),
-            content: const Text("Are you sure?", style: TextStyle()),
-            actions: <Widget>[
-              TextButton(
-                child: const Text(
-                  "Yes",
-                  style: TextStyle(),
-                ),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                   _deleteItem(index);
-                },
+            TextButton(
+              child: const Text(
+                "No",
+                style: TextStyle(),
               ),
-              TextButton(
-                child: const Text(
-                  "No",
-                  style: TextStyle(),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

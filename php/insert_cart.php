@@ -25,12 +25,9 @@ $result = $conn->query($sqlinsert);
 $number_of_result = $result->num_rows;
 
 if ($number_of_result > 0) {
-    while($row = $result->fetch_assoc()) {
-	    $cartqty = $row['cart_qty'];
-	}
-	$cartqty = $cartqty + 1;
-	$updatecart = "UPDATE `tbl_carts` SET `cart_qty`= '$cartqty' WHERE customer_email = '$useremail' AND subject_id = '$subjectid' AND cart_status IS NULL";
-	$conn->query($updatecart);
+        $response = array('status' => 'failed', 'data' => null);
+        sendJsonResponse($response);
+        return;
 } 
 else 
 {

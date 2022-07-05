@@ -103,15 +103,14 @@ class _SubjectsScreenState extends State<SubjectScreen> {
           ),
           TextButton.icon(
             onPressed: () async {
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (content) => CartScreen(
-                              user: widget.user,
-                            )));
-                _loadSubjects(1, search, dropdownvalue);
-                _loadMyCart();
-              
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (content) => CartScreen(
+                            user: widget.user,
+                          )));
+              _loadSubjects(1, search, dropdownvalue);
+              _loadMyCart();
             },
             icon: const Icon(
               Icons.shopping_cart,
@@ -184,64 +183,73 @@ class _SubjectsScreenState extends State<SubjectScreen> {
                                             const Icon(Icons.error),
                                       ),
                                     ),
-                                 Flexible(
-                                flex: 4,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 7,
-                                          child: Column(children: [
-                                           Text(
-                                              subjects[index].name.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
+                                    Flexible(
+                                        flex: 4,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 7,
+                                                  child: Column(children: [
+                                                    Text(
+                                                      subjects[index]
+                                                          .name
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(
+                                                      "RM " +
+                                                          double.parse(subjects[
+                                                                      index]
+                                                                  .price
+                                                                  .toString())
+                                                              .toStringAsFixed(
+                                                                  2),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    Text(
+                                                      subjects[index]
+                                                              .sessions
+                                                              .toString() +
+                                                          " sessions",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    Text(
+                                                      double.parse(subjects[
+                                                                      index]
+                                                                  .rating
+                                                                  .toString())
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          " stars",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ]),
+                                                ),
+                                                Expanded(
+                                                    flex: 3,
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          _addtocartDialog(
+                                                              index);
+                                                        },
+                                                        icon: const Icon(Icons
+                                                            .shopping_cart))),
+                                              ],
                                             ),
-                                            Text(
-                                              "RM " +
-                                                  double.parse(subjects[index]
-                                                          .price
-                                                          .toString())
-                                                      .toStringAsFixed(2),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              subjects[index]
-                                                      .sessions
-                                                      .toString() +
-                                                  " sessions",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              double.parse(subjects[index]
-                                                          .rating
-                                                          .toString())
-                                                      .toStringAsFixed(2) +
-                                                  " stars",
-                                              textAlign: TextAlign.center,
-                                            ),
-
-
-                                          ]),
-                                        ),
-                                        Expanded(
-                                            flex: 3,
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  _addtocartDialog(index);
-                                                },
-                                                icon: const Icon(
-                                                    Icons.shopping_cart))),
-                                      ],
-                                    ),
+                                          ],
+                                        ))
                                   ],
-                                ))
-                                         
-                                  ],
-                                )),      
+                                )),
                           );
                         }))),
                 SizedBox(
@@ -508,7 +516,7 @@ class _SubjectsScreenState extends State<SubjectScreen> {
       if (_selectedIndex == 2) {}
       if (_selectedIndex == 3) {}
       if (_selectedIndex == 4) {
-         Navigator.pushReplacement(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (content) => ProfileScreen(
@@ -591,48 +599,45 @@ class _SubjectsScreenState extends State<SubjectScreen> {
           );
         });
   }
-  
-  void  _addtocartDialog(int index) {
-   
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            title: const Text(
-              "Add to cart?",
-              style: TextStyle(),
+
+  void _addtocartDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          title: const Text(
+            "Add to cart?",
+            style: TextStyle(),
+          ),
+          content: const Text("Are you sure?", style: TextStyle()),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Yes",
+                style: TextStyle(),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                _addtoCart(index);
+              },
             ),
-            content: const Text("Are you sure?", style: TextStyle()),
-            actions: <Widget>[
-              TextButton(
-                child: const Text(
-                  "Yes",
-                  style: TextStyle(),
-                ),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                   _addtoCart(index);
-                },
+            TextButton(
+              child: const Text(
+                "No",
+                style: TextStyle(),
               ),
-              TextButton(
-                child: const Text(
-                  "No",
-                  style: TextStyle(),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  
   void _addtoCart(int index) {
     http.post(
         Uri.parse(CONSTANTS.server + "/mytutor/mobile/php/insert_cart.php"),
@@ -659,34 +664,37 @@ class _SubjectsScreenState extends State<SubjectScreen> {
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "You already added this course to cart.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0);
       }
     });
   }
+
   void _loadMyCart() {
-      http.post(
-          Uri.parse(
-              CONSTANTS.server + "/mytutor/mobile/php/load_mycartqty.php"),
-          body: {
-            "email": widget.user.email.toString(),
-          }).timeout(
-        const Duration(seconds: 5),
-        onTimeout: () {
-          return http.Response(
-              'Error', 408); // Request Timeout response status code
-        },
-      ).then((response) {
-        print(response.body);
-        var jsondata = jsonDecode(response.body);
-        if (response.statusCode == 200 && jsondata['status'] == 'success') {
-          print(jsondata['data']['carttotal'].toString());
-          setState(() {
-            widget.user.cart = jsondata['data']['carttotal'].toString();
-          });
-        }
-      });
-    
+    http.post(
+        Uri.parse(CONSTANTS.server + "/mytutor/mobile/php/load_mycartqty.php"),
+        body: {
+          "email": widget.user.email.toString(),
+        }).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        return http.Response(
+            'Error', 408); // Request Timeout response status code
+      },
+    ).then((response) {
+      print(response.body);
+      var jsondata = jsonDecode(response.body);
+      if (response.statusCode == 200 && jsondata['status'] == 'success') {
+        print(jsondata['data']['carttotal'].toString());
+        setState(() {
+          widget.user.cart = jsondata['data']['carttotal'].toString();
+        });
+      }
+    });
   }
-
-  
-
 }

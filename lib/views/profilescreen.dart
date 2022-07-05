@@ -14,7 +14,6 @@ import '../constant.dart';
 import '../models/user.dart';
 import 'loginscreen.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   final User user;
   const ProfileScreen({Key? key, required this.user}) : super(key: key);
@@ -82,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Your Profile")),
       body: Container(
-         decoration: BoxDecoration(
+        decoration: BoxDecoration(
             gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
@@ -109,16 +108,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   // onTap: () => {_updateImageDialog()},
                                   child: ClipOval(
                                     child: CachedNetworkImage(
-                                          imageUrl: CONSTANTS.server +
-                                              "/mytutor/mobile/assets/user/" +
-                                              widget.user.id.toString() +
-                                              '.jpg', 
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              const LinearProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                        ),
+                                      imageUrl: CONSTANTS.server +
+                                          "/mytutor/mobile/assets/user/" +
+                                          widget.user.id.toString() +
+                                          '.jpg',
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const LinearProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
                                   ),
                                 ),
                               )),
@@ -154,17 +153,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       color: Theme.of(context).primaryColor,
-                      
                     ),
                   ),
-              
                 ],
               ),
             )),
           ],
         )),
       ),
-       extendBody: true,
+      extendBody: true,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0x00ffffff),
         type: BottomNavigationBarType.fixed,
@@ -197,6 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -219,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (_selectedIndex == 2) {}
       if (_selectedIndex == 3) {}
       if (_selectedIndex == 4) {
-         Navigator.pushReplacement(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (content) => ProfileScreen(
@@ -228,9 +226,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     });
   }
-
-  
-
-
- 
 }

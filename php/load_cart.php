@@ -6,7 +6,7 @@ if (!isset($_POST)) {
 }
 include_once("dbconnect.php");
 $email = $_POST['customer_email'];
-$sqlloadcart = "SELECT tbl_carts.cart_id, tbl_carts.subject_id, tbl_carts.cart_qty, tbl_subjects.subject_name, tbl_subjects.subject_price FROM tbl_carts INNER JOIN tbl_subjects ON tbl_carts.subject_id = tbl_subjects.subject_id WHERE tbl_carts.customer_email = '$email' AND tbl_carts.cart_status IS NULL";
+$sqlloadcart = "SELECT tbl_carts.cart_id, tbl_carts.subject_id, tbl_carts.cart_qty, tbl_subjects.subject_name,tbl_subjects.subject_sessions, tbl_subjects.subject_price FROM tbl_carts INNER JOIN tbl_subjects ON tbl_carts.subject_id = tbl_subjects.subject_id WHERE tbl_carts.customer_email = '$email' AND tbl_carts.cart_status IS NULL";
 $result = $conn->query($sqlloadcart);
 $number_of_result = $result->num_rows;
 if ($result->num_rows > 0) {
@@ -19,6 +19,7 @@ if ($result->num_rows > 0) {
         $cartlist['cartid'] = $rows['cart_id'];
         $cartlist['sbname'] = $rows['subject_name'];
         $sbprice = $rows['subject_price'];
+        $cartlist['sbsession'] = $rows['subject_sessions'];
         $cartlist['price'] = number_format((float)$sbprice, 2, '.', '');
         $cartlist['cartqty'] = $rows['cart_qty'];
         $cartlist['sbid'] = $rows['subject_id'];
