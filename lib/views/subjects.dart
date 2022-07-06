@@ -476,14 +476,27 @@ class _SubjectsScreenState extends State<SubjectScreen> {
               ],
             )),
             actions: [
-              TextButton(
-                child: const Text(
-                  "Close",
-                  style: TextStyle(),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                    // <-- TextButton
+                    onPressed: () {
+                      _addtocartDialog(index);
+                    },
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.black,
+                      size: 24.0,
+                    ),
+                    label: Text(
+                      'Add to cart',
+                      style: TextStyle(
+                        color: Colors.black, //for text color
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           );
